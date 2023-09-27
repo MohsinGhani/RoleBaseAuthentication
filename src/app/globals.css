@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.ant-btn-primary {
+  background-color: #165188;
+}
+
+.ant-btn-primary:hover {
+  color: rgb(255, 255, 255) !important;
+  background-color: #165188 !important;
+}
+
+.spinner-border {
+  border-color: blue;
+  border-radius: 50%;
+}
+
+.ant-picker {
+  max-width: 8150px !important;
+  width: 100%;
+}
+.ant-select-selector {
+  height: 60px !important;
+  border-radius: 10px !important;
+  text-align: center;
+}
+
+.ant-select-selection-placeholder {
+  text-align: center !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+.ant-select-selection-item {
+  text-align: center !important;
+  display: flex !important;
+  align-items: center !important;
+}
