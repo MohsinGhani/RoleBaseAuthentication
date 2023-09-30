@@ -2,6 +2,8 @@
 import React, { useEffect, useState } from "react";
 import {
   createUserWithEmailAndPassword,
+  getAuth,
+  onAuthStateChanged,
   sendEmailVerification,
   updateProfile,
 } from "firebase/auth";
@@ -12,21 +14,23 @@ import { Modal, Select } from "antd";
 import { Button, Form, Input } from "antd";
 import { CloseOutlined } from "@ant-design/icons";
 import { doc, setDoc } from "firebase/firestore";
-
 const Page = () => {
+  const { Option } = Select;
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
   const router = useRouter();
-  const [role, setRole] = useState();
-  const { Option } = Select;
+
   const onFinish = async (values: any) => {
+    console.log("🚀 ~ values:", values);
+
     const {
       firstName,
       lastName,
       email,
+      role,
       phoneNumber,
       password,
-      role,
       confirmPassword,
     } = values;
 
@@ -50,7 +54,7 @@ const Page = () => {
       await sendEmailVerification(authUser.user);
 
       const uid = authUser.user.uid;
-      await setDoc(doc(db, "users", uid), {
+      await setDoc(doc(db, "Users", uid), {
         firstName,
         lastName,
         email,
@@ -77,7 +81,6 @@ const Page = () => {
     }
   };
 
-  console.log(role, "role");
   const onFinishFailed = (errorInfo: any) => {
     console.error("Validation failed:", errorInfo);
   };
@@ -97,8 +100,8 @@ const Page = () => {
             firstName: "",
             lastName: "",
             email: "",
-            phoneNumber: "",
             role: "",
+            phoneNumber: "",
             password: "",
             confirmPassword: "",
           }}
@@ -142,6 +145,23 @@ const Page = () => {
             />
           </Form.Item>
           <Form.Item
+            name="role"
+            rules={[
+              {
+                required: true,
+                message: "Please select your role.",
+              },
+            ]}
+          >
+            <Select
+              className="font-[500] text-[16px] max-w-[470px] w-full text-center rounded-[10px] font-poppins text-black h-[60px] mb-[20px]"
+              placeholder="Role"
+            >
+              <Option value="user">user</Option>
+              <Option value="Ambassador">Ambassador</Option>
+            </Select>
+          </Form.Item>
+          <Form.Item
             name="phoneNumber"
             rules={[
               { required: true, message: "Please enter your phone number." },
@@ -153,15 +173,6 @@ const Page = () => {
               placeholder="Phone Number"
             />
           </Form.Item>
-          <Select
-            value={role}
-            onChange={(value) => setRole(value)}
-            className="font-[500] text-[16px] max-w-[470px] w-full text-center rounded-[10px] font-poppins text-black h-[60px] mb-[20px]"
-            placeholder="Role"
-          >
-            <Option value="User">User</Option>
-            <Option value="Ambassador">Ambassador</Option>
-          </Select>
           <Form.Item
             name="password"
             rules={[
@@ -215,7 +226,7 @@ const Page = () => {
           Already have an account?{" "}
           <a
             onClick={() => {
-              router.push("/sign-in");
+              router.push("/");
             }}
             className="rounded-[10px] max-w-[450px] w-full h-[50px] cursor-pointer  text-[#1877f2]   text-[18px] font-[500]  hover:underline "
           >

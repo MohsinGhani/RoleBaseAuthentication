@@ -7,6 +7,8 @@ import { useRouter } from "next/navigation";
 import { auth } from "../../../firebase";
 import { Button } from "antd";
 import { useAuthContext } from "../layout";
+import { sessionStatus } from "../utils/session";
+const session = sessionStatus;
 const Header = () => {
   const { user, setUser } = useAuthContext();
   const [loading, setLoading] = useState(false);
@@ -26,7 +28,7 @@ const Header = () => {
   };
   const router = useRouter();
   return (
-    <div className="bg-[#165188] flex justify-between p-[20px] ">
+    <div className="bg-[#165188] flex-row flex justify-between p-[20px] ">
       <div>
         <h1
           onClick={() => {
@@ -37,13 +39,10 @@ const Header = () => {
           Beat the Bank
         </h1>
       </div>
-      <div className="gap-[25px] mt-[8px]">
-        <UserOutlined
-          onClick={() => {
-            router.push("/edit-profile");
-          }}
-          className="text-white fill-black cursor-pointer mr-[25px]"
-        />
+      <div className="gap-[25px] mt-[8px] flex ">
+        <Link href="/">
+          {auth.currentUser?.emailVerified === true ? "Contact us" : ""}
+        </Link>
         <Button
           onClick={() => {
             Signout();
@@ -51,7 +50,7 @@ const Header = () => {
           }}
           className="text-white"
         >
-          {user ? "Log out" : "Login"}
+          {auth.currentUser?.emailVerified === true ? "Log out" : "Login"}
         </Button>{" "}
       </div>
     </div>

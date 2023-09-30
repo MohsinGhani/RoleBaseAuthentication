@@ -11,7 +11,7 @@ const Page = () => {
   useEffect(() => {
     setTimeout(() => {
       setLoading(true);
-      router.push("/landing-page");
+      router.push("/sign-in");
     }, 2000);
   }, []);
 

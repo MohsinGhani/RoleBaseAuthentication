@@ -30,7 +30,7 @@ const Page = () => {
   const handleVerifyEmail = async () => {
     applyActionCode(auth, actionCode)
       .then(() => {
-        router.push("/");
+        router.push("/sign-in");
       })
       .catch((error) => {
         console.log("🚀 ~ error:", error);

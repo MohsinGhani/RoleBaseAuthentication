@@ -9,6 +9,7 @@ import { Button, Checkbox, Form, Input, Modal } from "antd";
 import { auth } from "../../../firebase";
 import { CloseOutlined } from "@ant-design/icons";
 import { useAuthContext } from "../layout";
+import withAuth from "../component/withAuth";
 
 const Page = () => {
   const [form] = Form.useForm();
@@ -29,11 +30,10 @@ const Page = () => {
       .then(() => {
         signInWithEmailAndPassword(auth, email, password)
           .then((res) => {
-            console.log("Sign-in successful", res);
-            if (res.user.emailVerified === true) {
-              setTimeout(() => {
-                router.push("/success-page");
-              }, 1000);
+            if (res.user.emailVerified === true && user.role == "Ambassador") {
+              router.push("/Serverside");
+            } else if (res.user.emailVerified === true && user.role == "user") {
+              router.push("/clientside");
             } else {
               Modal.error({
                 title: "Please verify your email first",
@@ -45,6 +45,7 @@ const Page = () => {
               });
               router.push("/");
             }
+            console.log("res", auth.currentUser);
           })
           .catch((err) => {
             if (err.code === "auth/invalid-login-credentials") {
@@ -155,4 +156,4 @@ const Page = () => {
     </div>
   );
 };
-export default Page;
+export default withAuth(Page);
