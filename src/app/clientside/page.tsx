@@ -2,16 +2,27 @@
 import React, { useEffect } from "react";
 
 import withAuth from "../component/withAuth";
-import { auth } from "../../../firebase";
-import { useAuthContext } from "../layout";
-import { redirect } from "next/navigation";
-interface User {
-  role: string;
-}
-const ClientSide = () => {
-  const { user }: { user: any } = useAuthContext();
 
-  return <div>This page is protected routbe on client side</div>;
+import { useRouter } from "next/navigation";
+import { Button } from "antd";
+
+const ClientSide = () => {
+  const router = useRouter();
+
+  return (
+    <div>
+      <Button
+        onClick={() => {
+          router.push("/ambassador1");
+        }}
+        className="mt-[10px] ml-[10px]"
+        type="primary"
+      >
+        route to Ambassador1
+      </Button>
+      <h1>This is a Ambassador 1 component</h1>
+    </div>
+  );
 };
 
 export default withAuth(ClientSide);
