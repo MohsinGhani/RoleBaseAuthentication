@@ -9,7 +9,7 @@ import withAuth from "../component/withAuth";
 import { Button } from "antd";
 import { useRouter } from "next/navigation";
 
-const page = () => {
+const Page = () => {
   const router = useRouter();
   return (
     <div>
@@ -27,4 +27,4 @@ const page = () => {
   );
 };
 
-export default withAuth(page);
+export default withAuth(Page);
