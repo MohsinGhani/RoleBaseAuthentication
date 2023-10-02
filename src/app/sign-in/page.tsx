@@ -15,10 +15,10 @@ const Page = () => {
   const [form] = Form.useForm();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  // const user = auth.currentUser;
+
   const { user }: { user: any } = useAuthContext();
 
-  console.log(auth, "auth");
+  console.log(user?.role, "auth");
 
   const onFinish = async (values: any) => {
     const { email, password } = values;
@@ -30,10 +30,8 @@ const Page = () => {
       .then(() => {
         signInWithEmailAndPassword(auth, email, password)
           .then((res) => {
-            if (res.user.emailVerified === true && user.role == "Ambassador") {
+            if (res.user.emailVerified === true) {
               router.push("/Serverside");
-            } else if (res.user.emailVerified === true && user.role == "user") {
-              router.push("/clientside");
             } else {
               Modal.error({
                 title: "Please verify your email first",
