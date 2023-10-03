@@ -1,7 +1,7 @@
 "use client";
 
 import { redirect, usePathname, useRouter } from "next/navigation";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { auth } from "../../../firebase";
 import { useAuthContext } from "../layout";
 
@@ -12,15 +12,19 @@ export default function withAuth(Component: any) {
     const router = useRouter();
     const pathname: any = usePathname();
     console.log("current pathname", pathname);
+    const [pathnames, setPathname] = useState(window.location.pathname);
     console.log("🚀 ~ router:", router);
     const redirections = {
       user: ["/Serverside", "/user1", "/user2"],
       Ambassador: ["/clientside", "/ambassador1", "/ambassador2"],
     };
     // router.replace(redirections.user[0]);
+    const handleLocationChange = () => {
+      setPathname(window.location.pathname);
+    };
 
     useEffect(() => {
-      if (auth.currentUser?.emailVerified === false) {
+      if (!auth.currentUser?.emailVerified === true) {
         router.push("/sign-in");
       } else if (
         auth.currentUser?.emailVerified === true &&
@@ -53,6 +57,8 @@ export default function withAuth(Component: any) {
         redirections.user.includes(pathname)
       ) {
         router.push("/clientside");
+      } else {
+        handleLocationChange();
       }
     }, [auth.currentUser]);
 

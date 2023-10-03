@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import withAuth from "../component/withAuth";
 
@@ -8,11 +8,14 @@ import { Button } from "antd";
 
 const ClientSide = () => {
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
 
   return (
     <div>
       <Button
+        loading={loading}
         onClick={() => {
+          setLoading(true);
           router.push("/ambassador1");
         }}
         className="mt-[10px] ml-[10px]"
